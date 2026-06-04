@@ -1,0 +1,6 @@
+{
+  "name": "AETHER",
+  "description": "Luxury private jet and elite travel operating system.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
