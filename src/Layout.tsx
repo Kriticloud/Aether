@@ -218,22 +218,27 @@ export default function Layout({
         </div>
 
         {/* Mobile Header Menu Toggle */}
-        <div className="md:hidden p-4 relative z-20 flex items-center justify-between border-b border-aether-glass-border bg-aether-black/50 backdrop-blur-md">
-          <div className="flex items-center gap-2">
-            <Plane className="w-5 h-5 text-aether-gold" />
-            <span className="font-serif font-semibold tracking-widest text-lg">
-              AETHER
-            </span>
+        <div className="md:hidden p-4 relative z-20 flex flex-col gap-4 border-b border-aether-glass-border bg-aether-black/50 backdrop-blur-md">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Plane className="w-5 h-5 text-aether-gold" />
+              <span className="font-serif font-semibold tracking-widest text-lg">
+                AETHER
+              </span>
+            </div>
+            <button
+              onClick={() => {
+                triggerHaptic("medium");
+                setMobileMenuOpen(true);
+              }}
+              className="p-2 text-aether-cloud"
+            >
+              <Menu className="w-6 h-6" />
+            </button>
           </div>
-          <button
-            onClick={() => {
-              triggerHaptic("medium");
-              setMobileMenuOpen(true);
-            }}
-            className="p-2 text-aether-cloud"
-          >
-            <Menu className="w-6 h-6" />
-          </button>
+          <div className="flex justify-center items-center -mx-2 pointer-events-auto w-full origin-top transform scale-90">
+             <GlobalTimezoneSync />
+          </div>
         </div>
 
         <div className="flex-1 overflow-y-auto overflow-x-hidden relative z-10 w-full h-full custom-scrollbar">

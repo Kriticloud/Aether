@@ -15,13 +15,12 @@ interface LuggageTrackerProps {
 }
 
 const LUGGAGE_STATUSES = [
-  { id: "checked", label: "Checked In", icon: Briefcase, time: "T-02:15" },
-  { id: "sorted", label: "Security & Sorted", icon: Search, time: "T-01:45" },
-  { id: "loaded", label: "Loaded on Aircraft", icon: Truck, time: "T-00:30" },
-  { id: "inflight", label: "In-Flight", icon: Plane, time: "T+00:00" },
+  { id: "checked", label: "Checked", icon: Briefcase, time: "T-02:15" },
+  { id: "loaded", label: "Loaded", icon: Truck, time: "T-00:30" },
+  { id: "intransit", label: "In-Transit", icon: Plane, time: "T+00:00" },
   {
     id: "delivered",
-    label: "Available at Carousel",
+    label: "Delivered",
     icon: MapPin,
     time: "Pending",
   },
@@ -30,12 +29,12 @@ const LUGGAGE_STATUSES = [
 export default function InFlightLuggageTracker({
   flightId,
 }: LuggageTrackerProps) {
-  const [activeStep, setActiveStep] = useState(3);
+  const [activeStep, setActiveStep] = useState(2);
 
   useEffect(() => {
     // Simulate real-time RFID progress updates
     const interval = setInterval(() => {
-      setActiveStep((prev) => (prev < 4 ? prev + 1 : prev));
+      setActiveStep((prev) => (prev < 3 ? prev + 1 : prev));
     }, 15000); // Progresses one step every 15 seconds (simulated)
     return () => clearInterval(interval);
   }, []);
