@@ -15,6 +15,7 @@ import AviationMilestones from "./AviationMilestones";
 import AccessActivityLog from "./AccessActivityLog";
 import DocumentScanner from "./DocumentScanner";
 import TravelAdvisorModule from "./TravelAdvisorModule";
+import AviationAlertsPanel from "./AviationAlertsPanel";
 
 export default function PassengerProfile() {
   const { currency, setCurrency } = useCurrency();
@@ -220,6 +221,13 @@ export default function PassengerProfile() {
             transition={{ delay: 0.4 }}
           >
             <TravelAdvisorModule />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.45 }}
+          >
+            <AviationAlertsPanel />
           </motion.div>
         </div>
       </div>

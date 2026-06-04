@@ -43,6 +43,51 @@ export default function FlightBooking() {
     }, 2000);
   };
 
+  const exportToCalendar = () => {
+    if (!formData.date) return;
+
+    // Basic date parsing formatting for ics (YYYYMMDDTHHMMSSZ)
+    // Assuming departure time is 09:00 AM UTC for this mock
+    const [year, month, day] = formData.date.split("-");
+
+    // Start time: 09:00:00 UTC
+    const dtStart = `${year}${month}${day}T090000Z`;
+
+    // We mock a duration, say 4 hours 15 mins -> 13:15:00 UTC
+    const dtEnd = `${year}${month}${day}T131500Z`;
+
+    const summary = `Flight: ${formData.from} to ${formData.to}`;
+    const description = `Your itinerary is confirmed.\\nRoute: ${formData.from} to ${formData.to}\\nAircraft: ${formData.aircraft}\\nPassengers: ${formData.passengers}`;
+    const location = formData.from;
+
+    const icsContent = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "PRODID:-//Aether//Flight Booking//EN",
+      "CALSCALE:GREGORIAN",
+      "BEGIN:VEVENT",
+      `DTSTART:${dtStart}`,
+      `DTEND:${dtEnd}`,
+      `SUMMARY:${summary}`,
+      `DESCRIPTION:${description}`,
+      `LOCATION:${location}`,
+      "END:VEVENT",
+      "END:VCALENDAR",
+    ].join("\\r\\n");
+
+    const blob = new Blob([icsContent], {
+      type: "text/calendar;charset=utf-8",
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "flight_itinerary.ics");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="p-8 pb-32 max-w-5xl mx-auto">
       <header className="mb-10 text-center">
@@ -281,11 +326,17 @@ export default function FlightBooking() {
                     });
                     setStep(1);
                   }}
-                  className="px-8 py-4 border border-aether-glass-border hover:bg-aether-glass transition-colors rounded-sm font-medium w-full sm:w-auto"
+                  className="px-6 py-4 border border-aether-glass-border hover:bg-aether-glass transition-colors rounded-xl font-medium w-full sm:w-auto text-sm"
                 >
                   Start New Booking
                 </button>
-                <button className="px-8 py-4 bg-aether-gold text-aether-black font-medium tracking-wide hover:bg-white transition-colors flex items-center justify-center gap-2 rounded-sm w-full sm:w-auto">
+                <button
+                  onClick={exportToCalendar}
+                  className="px-6 py-4 border border-aether-glass-border hover:bg-aether-glass transition-colors rounded-xl font-medium w-full sm:w-auto flex items-center justify-center gap-2 text-sm text-aether-steel hover:text-white"
+                >
+                  <Calendar className="w-4 h-4" /> Export to Calendar
+                </button>
+                <button className="px-6 py-4 bg-aether-gold text-aether-black font-medium tracking-wide hover:bg-white transition-colors flex items-center justify-center gap-2 rounded-xl w-full sm:w-auto text-sm">
                   <Download className="w-4 h-4" /> Download Pass
                 </button>
               </div>

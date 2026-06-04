@@ -24,6 +24,7 @@ import Globe from "react-globe.gl";
 import GlobalTimezoneSync from "./GlobalTimezoneSync";
 import InFlightMode from "./InFlightMode";
 import ARSkyView from "./ARSkyView";
+import InFlightLuggageTracker from "./InFlightLuggageTracker";
 import { triggerHaptic } from "./haptics";
 import { AnimatePresence } from "motion/react";
 
@@ -138,9 +139,9 @@ export default function LiveFlightDashboard() {
   const [realTimeMeteo, setRealTimeMeteo] = useState<any[] | null>(null);
   const [arcsData, setArcsData] = useState(initialArcsData);
   const [showWeather, setShowWeather] = useState(false);
-  const [activeFlightTab, setActiveFlightTab] = useState<"Timeline" | "Health">(
-    "Timeline",
-  );
+  const [activeFlightTab, setActiveFlightTab] = useState<
+    "Timeline" | "Health" | "Luggage"
+  >("Timeline");
   const [viewMode, setViewMode] = useState<
     "Telemetry" | "In-Flight" | "AR Sky-View"
   >("Telemetry");
@@ -582,7 +583,20 @@ export default function LiveFlightDashboard() {
                       >
                         <Activity className="w-3.5 h-3.5" /> Health
                       </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActiveFlightTab("Luggage");
+                        }}
+                        className={`text-xs uppercase tracking-widest font-semibold pb-2 border-b-2 transition-colors flex items-center gap-1.5 ${activeFlightTab === "Luggage" ? "text-aether-gold border-aether-gold" : "text-aether-steel border-transparent hover:text-white"}`}
+                      >
+                        Luggage
+                      </button>
                     </div>
+
+                    {activeFlightTab === "Luggage" && (
+                      <InFlightLuggageTracker flightId={flight.id} />
+                    )}
 
                     {activeFlightTab === "Timeline" && (
                       <div className="relative pl-3 space-y-6">
